@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "When Does Geometry Beat a Token-Entropy Baseline for Predicting Semantic Entropy? A Robustness Audit of Training-Free Hallucination Signals"
+abstract: >-
+  Training-free geometric features of transformer hidden states have been proposed as
+  cheap, probe-free signals of semantic uncertainty for hallucination detection. This
+  work audits whether they deliver rather than proposing a detector, and finds that a
+  trivial token-entropy baseline matches or beats every one of them, and that which
+  features appear reliable is set by the evaluation split rather than by the geometry.
+type: software
+authors:
+  - given-names: "Soumya Kumar"
+    family-names: "Sinha"
+    email: "2306314@kiit.ac.in"
+    orcid: "https://orcid.org/0009-0009-8557-4794"
+    affiliation: "School of Computer Engineering, KIIT, Bhubaneswar, India"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21097426
+    description: "Concept DOI — always resolves to the latest version"
+repository-code: "https://github.com/SoumyaSinha2603/Light-SE"
+license: MIT
+license-url: "https://opensource.org/licenses/MIT"
+keywords:
+  - hallucination
+  - semantic entropy
+  - uncertainty quantification
+  - large language models
+  - reproducibility
+  - evaluation

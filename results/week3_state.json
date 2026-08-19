@@ -1,0 +1,496 @@
+{
+  "session": "Week 3 \u2014 2x3 grid COMPLETE, CIs pending",
+  "date": "2026-06-18",
+  "status": "EXPERIMENTAL PHASE CLOSED \u2014 writing next",
+  "headline_finding": "Spectral geometric uncertainty features (EigenScore/INSIDE ~99% length, effrank dies under seq^2) are sequence-length confounds; curvature is the sole length-independent survivor. Evaluation design determines the verdict.",
+  "paper_reframe": "Robustness AUDIT of geometric uncertainty features. Thesis: they do NOT robustly transfer; apparent robustness in prior work (King/Yang/Damirchi 2026) likely artifact of narrow single-setting eval. Negative result with receipts.",
+  "claim_strength": "UNDECIDED \u2014 pre-registered rule: if off-diagonal AUROC CIs reliably include 0.50 -> strong audit claim. If noisily positive -> measured claim. Run \u00a77 to decide.",
+  "next_cell": "WRITING \u2014 no experiments pending. Pre-draft TODOs: 'why layer 16' sweep, corrected-SE baselines table, LID scope decision (r~0.07). See audit_closeout.",
+  "grid_summary": {
+    "TQA-Llama": "curv .162/.613 eigen .121/.643 effrank .200/.633 (the only strong cell)",
+    "all_others": "weak to chance; eigenscore goes negative on all 4 new cells"
+  },
+  "audit_closeout": {
+    "phase": "week3_length_audit_closeout",
+    "timestamp": "20260618_143346",
+    "primary_generalization_endpoint": {
+      "choice": "held_out_n245_grid",
+      "rationale": "Full-set (817) CIs on characterization data are anti-conservative; held-out n=245 is the legitimate transfer estimate and the pre-registered \u00a77 endpoint.",
+      "n817_role": "power/robustness supplement only; never mixed with n245 per-cell"
+    },
+    "leakage_resolution": {
+      "feature": "curv_std_w016",
+      "standardization": "per-layer StandardScaler FIT ON TRAIN ONLY (n_train=572), applied to all 817",
+      "verdict": "leakage-free; n=245 test split is a clean held-out estimate",
+      "moments_note": "feature mean ~1.913 / std ~0.021 is the arccos turning-angle location, NOT evidence of no standardization; standardization is upstream on hidden states"
+    },
+    "length_confound_audit": {
+      "curvature_curv_std_w016": {
+        "corr_with_seqlen": {
+          "TQA-Llama": 0.398,
+          "SQ-Llama": 0.479,
+          "Bio-Llama": 0.55,
+          "TQA-Mistral": 0.592,
+          "Bio-Mistral": 0.625,
+          "SQ-Mistral": 0.475
+        },
+        "pct_length_variance": "R\u00b2(seq+seq\u00b2) 22.6-41.2% across cells, anchor TQA-L 27.4%; non-length remainder 59-77% (anchor 72.6%). Canonical build() recompute 20260627. REPLACES RECOMPUTE-PENDING / retired '17-37%/~79%'.",
+        "verdict": "length-partialled signal survives seq+seq^2+token at full-817 on 4/6 cells; held-out CI-clean on SQ-Llama only",
+        "corr_with_seqlen_SOURCE": "canonical build() 20260626; REPLACES retired 0.458/0.475/0.527/0.605/0.590/0.416 (non-canonical origin, unpinned)",
+        "pct_length_variance_per_cell": {
+          "TQA-Llama": 27.4,
+          "TQA-Mistral": 38.3,
+          "Bio-Llama": 36.2,
+          "Bio-Mistral": 41.2,
+          "SQ-Llama": 27.9,
+          "SQ-Mistral": 22.6
+        }
+      },
+      "eigenscore_full": {
+        "corr_with_seqlen": [
+          0.996,
+          0.991,
+          0.994,
+          0.986,
+          0.988,
+          0.981
+        ],
+        "pct_length_variance": "~98-99%",
+        "verdict": "LENGTH CONFOUND \u2014 apparent SE-detection is length leakage; raw +0.29 on TQA-Llama is ~pure length; 'sign-flip' was length~SE varying by dataset",
+        "NOTE_20260626": "unaffected by SE-target/fingerprint correction; ~0.99 length confound stands"
+      },
+      "effrank_mean": {
+        "corr_with_seqlen": {
+          "TQA-Llama": 0.669,
+          "Bio-Llama": 0.863,
+          "SQ-Llama": 0.877,
+          "TQA-Mistral": 0.499,
+          "Bio-Mistral": 0.776,
+          "SQ-Mistral": 0.708
+        },
+        "pct_length_variance": "58-93% (R\u00b2 on seq+seq\u00b2, canonical build() 20260627); anchor TQA-L 83%. Linear-only corr\u00b2 range 25-77% (reference). REPLACES retired '35-77%' (derived from retired 0.731 corr family / linear-only; superseded). Method matches curvature: R\u00b2 on seq+seq\u00b2, not corr\u00b2, per addendum 20260626.",
+        "seq2_test": "DIES \u2014 all SURVIVES cells collapse under seq^2: TQA-Llama +0.178->-0.060, Bio-Llama +0.132->+0.017, SQ-Llama +0.191->-0.096",
+        "verdict": "LENGTH CONFOUND \u2014 \u00a79 'survivals' were linear-control leakage artifacts",
+        "NOTE_20260626": "corr_with_seqlen AND pct_length_variance both RECOMPUTED & VERIFIED 20260627 against canonical build(); all flags cleared.",
+        "corr_with_seqlen_SOURCE": "canonical build() 20260627; SE-independent; REPLACES retired 0.731-family (0.731/0.870/0.877/0.593/0.776/0.686, non-canonical origin). Matches addendum figure-input table 0.499..0.877 (0.669).",
+        "range_canonical": "0.499 (TQA-Mistral) .. 0.877 (SQ-Llama); anchor TQA-L 0.669",
+        "pct_length_variance_per_cell": {
+          "TQA-Llama": {
+            "linear_pct": 44.8,
+            "full_pct": 83.0
+          },
+          "TQA-Mistral": {
+            "linear_pct": 24.9,
+            "full_pct": 58.3
+          },
+          "Bio-Llama": {
+            "linear_pct": 74.5,
+            "full_pct": 92.9
+          },
+          "Bio-Mistral": {
+            "linear_pct": 60.2,
+            "full_pct": 80.4
+          },
+          "SQ-Llama": {
+            "linear_pct": 76.9,
+            "full_pct": 91.8
+          },
+          "SQ-Mistral": {
+            "linear_pct": 50.1,
+            "full_pct": 62.0
+          }
+        }
+      }
+    },
+    "curvature_key_estimates": {
+      "timestamp": "20260626_163558",
+      "STATUS": "CORRECTED on hybrid_SE, |seq,seq^2,token, convention A. Supersedes stale-SE +0.149/+0.208.",
+      "full817_partial_r": {
+        "TQA-Llama": 0.086,
+        "SQ-Llama": 0.1,
+        "Bio-Llama": 0.087,
+        "Bio-Mistral": 0.09,
+        "TQA-Mistral": 0.055,
+        "SQ-Mistral": 0.039
+      },
+      "heldout_n245_partial_r": {
+        "TQA-Llama": {
+          "r": 0.098,
+          "CI": [
+            -0.041,
+            0.228
+          ],
+          "clean": false
+        },
+        "SQ-Llama": {
+          "r": 0.172,
+          "CI": [
+            0.05,
+            0.297
+          ],
+          "clean": true
+        },
+        "Bio-Llama": {
+          "r": 0.053,
+          "CI": [
+            -0.076,
+            0.18
+          ],
+          "clean": false
+        },
+        "TQA-Mistral": {
+          "r": 0.044,
+          "CI": [
+            -0.085,
+            0.174
+          ],
+          "clean": false
+        },
+        "Bio-Mistral": {
+          "r": -0.011,
+          "CI": [
+            -0.14,
+            0.122
+          ],
+          "clean": false
+        },
+        "SQ-Mistral": {
+          "r": 0.03,
+          "CI": [
+            -0.086,
+            0.145
+          ],
+          "clean": false
+        }
+      },
+      "heldout_clean_count": "1/6 (SQ-Llama only)"
+    },
+    "locked_claims": {
+      "C1": "Curvature->SE real on TQA-Llama; length-partialled; survives seq^2+token; CI-clean at full-n; train-only standardization (no leakage).",
+      "C2": "Held-out: transfers TQA->SQuAD within Llama, not across model family (Mistral). Full-n: small effect detectable more broadly but near n=245 floor. Held-out reported primary. Do NOT state flat 'does not generalize'.",
+      "C3": "Spectral covariance features are sequence-length confounds: eigenscore ~99% length, effrank 35-77% length and dies under seq^2. HEADLINE.",
+      "C4": "Evaluation design determines the robustness verdict \u2014 demonstrated 3 ways: (a) eigenscore AUROC>0.5 vs partial-r null [token passthrough/length]; (b) effrank survives linear but dies nonlinear length control; (c) curvature reads null@n245-heldout vs positive@n817-full. Strongest contribution."
+    },
+    "demoted": {
+      "compression_mechanism": "Demote to secondary observation \u2014 %zero confounded with model family; do not claim as mechanism."
+    },
+    "methods_disclosures_required": [
+      "Curvature from MEAN-POOLED token representations -> length-coupled by construction (corr~0.46); controlled post hoc via seq_len + seq_len^2 partials.",
+      "Per-layer StandardScaler fit on 572 train rows only, applied to all 817 (leakage-free).",
+      "0->16 window = 5 layers -> mean of 3 turning angles (thin statistic; explains small magnitude + layer sensitivity; needs 'why layer 16' sweep)."
+    ],
+    "next_phase": "WRITING \u2014 Claims locked. Outstanding pre-draft: 'why layer 16' layer sweep; corrected-SE baselines table; scope decision on LID (weak r~0.07).",
+    "CORRECTION_LOG": [
+      "20260626: (a) retired 0.458-family curv length-corr -> canonical build() values; (b) stale held-out grid (+0.149/+0.208 on stale SE) -> hybrid_SE n=245 conv-A; (c) model-bound verdict -> endpoint-determines-verdict (C4).",
+      "20260626: (a) retired 0.458-family curv length-corr -> canonical build() values; (b) stale held-out grid (+0.149/+0.208 on stale SE) -> hybrid_SE n=245 conv-A; (c) model-bound verdict -> endpoint-determines-verdict (C4).",
+      "20260626: (a) retired 0.458-family curv length-corr -> canonical build() values; (b) stale held-out grid (+0.149/+0.208 on stale SE) -> hybrid_SE n=245 conv-A; (c) model-bound verdict -> endpoint-determines-verdict (C4)."
+    ],
+    "verdict_reframe_20260626": "Model-bound RETIRED as standalone claim. Curvature folded into C4: full-817 4/6 clean across both models/all tasks vs held-out 1/6 clean \u2014 same feature/target/controls, only the eval split changes. SQ-Llama is the sole both-endpoint-robust cell."
+  },
+  "lid_and_composite_closeout": {
+    "phase": "week3_lid_grid_extension_and_composite_scope_closeout",
+    "timestamp": "20260620_055354",
+    "lid_grid_extension": {
+      "motivation": "LID was un-audited for length while eigenscore/effrank/curvature were. \u00a716 (full-cloud) showed LID +0.106 full-817 / +0.121 held-out, CI-clean, looked like a second survivor comparable to curvature. Chose Option 2: grid-test before deciding.",
+      "estimator": "local TwoNN (Facco 2017), k=30 neighborhood, 0.9 keep-fraction, layer_16 last-token. Replicated EXACTLY from LID Cell 4/6 (integrity gate: full-pool recompute vs stored PRIMARY Spearman=1.0000).",
+      "leakage_found_and_corrected": {
+        "issue": "Original PRIMARY built neighbor cKDTree on FULL 817 cloud -> each test question's LID used train AND test points as neighbors. Representation leakage (NOT target leakage; TwoNN never sees SE). Inconsistent with curvature's train-only-clean standard.",
+        "fix": "Outer neighbor tree built on TRAIN-ONLY (n=572); all 817 queried against it; self excluded symmetrically so train/test treated identically.",
+        "effect_of_fix": "TQA-Llama anchor effect roughly HALVED and CI crossed zero: \u00a716 full-cloud +0.106[+0.043,+0.168] -> train-only +0.057[-0.015,+0.121]. Confirms the \u00a716 signal was substantially leakage."
+      },
+      "grid_results_trainonly_k30": {
+        "_controls": "partial r (LID, SE | seq + seq^2 + token_entropy); held-out n=245 primary, full-817 supplement",
+        "TQA-Llama": {
+          "corr_len": -0.018,
+          "raw": 0.041,
+          "pr_full": [
+            0.057,
+            -0.015,
+            0.121
+          ],
+          "pr_held": [
+            0.048,
+            -0.066,
+            0.156
+          ]
+        },
+        "Bio-Llama": {
+          "corr_len": 0.059,
+          "raw": -0.022,
+          "pr_full": [
+            -0.029,
+            -0.091,
+            0.034
+          ],
+          "pr_held": [
+            0.043,
+            -0.073,
+            0.156
+          ]
+        },
+        "Bio-Mistral": {
+          "corr_len": 0.217,
+          "raw": -0.045,
+          "pr_full": [
+            -0.055,
+            -0.121,
+            0.009
+          ],
+          "pr_held": [
+            -0.003,
+            -0.123,
+            0.116
+          ]
+        },
+        "SQ-Llama": {
+          "corr_len": 0.186,
+          "raw": 0.109,
+          "pr_full": [
+            0.048,
+            -0.021,
+            0.121
+          ],
+          "pr_held": [
+            0.038,
+            -0.08,
+            0.163
+          ]
+        },
+        "SQ-Mistral": {
+          "corr_len": 0.066,
+          "raw": -0.109,
+          "pr_full": [
+            -0.122,
+            -0.183,
+            -0.056
+          ],
+          "pr_held": [
+            -0.191,
+            -0.288,
+            -0.081
+          ]
+        },
+        "TQA-Mistral": {
+          "corr_len": -0.184,
+          "raw": -0.097,
+          "pr_full": [
+            -0.03,
+            -0.09,
+            0.035
+          ],
+          "pr_held": [
+            -0.0,
+            -0.107,
+            0.113
+          ]
+        }
+      },
+      "verdict": "DEMOTED \u2014 did not survive clean evaluation. No cell has a CI-clean POSITIVE partial r at held-out n=245. The only CI-excludes-zero result is SQ-Mistral NEGATIVE (held-out -0.191[-0.288,-0.081]). LID is length-independent on TQA (corr_len -0.018) but picks up mild length coupling off-TQA (Bio-Mistral +0.217, SQ-Llama +0.186), so even its length-independence is somewhat TQA-specific.",
+      "scope_limit_resolved": "LID is now grid-tested (was TQA-Llama-only). No loose thread.",
+      "canonical_note": "Report TRAIN-ONLY numbers as canonical. Original \u00a716 full-cloud +0.106/+0.121 was leakage-inflated; cite only with the correction noted."
+    },
+    "completed_taxonomy_four_features": {
+      "curvature": "SOLE SURVIVOR. ~21% length variance; survives seq^2+token; CI-clean full-n anchor (+0.086[+0.018,+0.156]); replicates TQA->SQuAD within Llama; model-bound (null on Mistral).",
+      "eigenscore": "CONFOUND. ~99% sequence length all 6 cells. Apparent detection = length leakage. 'Sign-flip' = length~SE varying by dataset. HEADLINE.",
+      "effrank": "CONFOUND. 53-77% length; all \u00a79 'survivals' die under seq^2 control.",
+      "lid": "NON-SURVIVOR (third failure mode). Length-independent on anchor but signal was largely representation leakage; halves to CI-marginal when corrected; no positive transfer.",
+      "why_this_matters": "Three DISTINCT failure modes (spectral=length confound; LID=leakage-sensitive + non-transferring; curvature=real but model-bound) is a richer, more credible audit than a one-note 'it's all length.'"
+    },
+    "composite_decision": {
+      "question": "Build curvature+LID(+Mahalanobis) composite vs best single feature, pre-reg abort dAUROC>0.03?",
+      "decision": "DROPPED \u2014 principled, not convenience.",
+      "rationale": "After full audit the viable feature set reduced to curvature alone: eigenscore/effrank are length confounds, LID does not survive leakage-corrected grid evaluation, Mahalanobis never computed. A composite would combine one length-independent feature with confounded/non-surviving features, cannot coherently exceed curvature alone under dAUROC>0.03, and would risk reintroducing the artifacts this paper documents. Reported as considered-and-rejected.",
+      "note": "When LID briefly looked like a clean +0.12 co-survivor (\u00a716), a curvature+LID composite was tempting; the leakage correction removed that basis. Decision is now evidence-backed."
+    },
+    "sprint_status": "EXPERIMENTAL PHASE FULLY CLOSED \u2014 no dangling threads. Every feature audited to one standard; leakage resolved; LID + composite scope settled on evidence. Next = figures + prose.",
+    "open_flags": [
+      "Mahalanobis distance was never computed (listed in original plan). Acknowledge as not-pursued, not a gap to fill \u2014 the audit makes it moot.",
+      "0->24 > 0->16 window disclosure (from layer_sweep) still must be reported transparently in methods.",
+      "Anchor curvature has 3 stored point estimates (+0.086 \u00a710b / +0.107 sweep / +0.100 CSV). Canonical = stored CSV value; do NOT quote multiple anchor numbers."
+    ]
+  },
+  "layer_sweep": {
+    "phase": "week3_layer_localization_sweep",
+    "timestamp": "20260620_060745",
+    "purpose": "Test a-priori 0->16 window (cherry-pick defense) + within-Llama task-shift replication. 0->16 stays PRIMARY regardless of sweep; wider windows reported-not-adopted.",
+    "design": {
+      "cells": [
+        "TQA-Llama",
+        "SQ-Llama"
+      ],
+      "control": "seq + seq^2 + token_entropy",
+      "standardization": "per-cell per-layer StandardScaler fit on that cell's OWN seed-42 train split (leakage-free)",
+      "endpoints": "full n=817 (power/shape) + held-out n=245 (replication check)",
+      "resolution_limit": "9 saved layers only; finer needs GPU re-extraction (not done; stated limitation)",
+      "integrity": "SQ-Llama id-joined on metadata.question_id; 817 joined / 0 skipped; 0->16 full-817 = +0.100 matched \u00a710b SQ-Llama exactly"
+    },
+    "cumulative_window_full817": {
+      "TQA-Llama": {
+        "0->8": 0.087,
+        "0->12": 0.087,
+        "0->16": 0.107,
+        "0->20": 0.097,
+        "0->24": 0.148,
+        "0->28": 0.119,
+        "0->31": 0.093
+      },
+      "SQ-Llama": {
+        "0->8": 0.019,
+        "0->12": 0.085,
+        "0->16": 0.1,
+        "0->20": 0.098,
+        "0->24": 0.165,
+        "0->28": 0.125,
+        "0->31": 0.109
+      },
+      "note": "All windows CI-exclude-zero at full-817 (except SQ 0->8). 0->16 on a positive PLATEAU, not a spike."
+    },
+    "cumulative_window_heldout245": {
+      "TQA-Llama": {
+        "0->16": [
+          0.119,
+          -0.02,
+          0.242
+        ],
+        "0->24": [
+          0.174,
+          0.054,
+          0.294
+        ]
+      },
+      "SQ-Llama": {
+        "0->16": [
+          0.172,
+          0.044,
+          0.302
+        ],
+        "0->24": [
+          0.258,
+          0.133,
+          0.372
+        ]
+      },
+      "note": "held-out 0->16 CI-clean on SQ, CI-marginal on TQA (power, consistent with \u00a710 anchor)"
+    },
+    "per_layer_full817": {
+      "TQA-Llama": {
+        "L4": 0.087,
+        "L8": -0.004,
+        "L12": 0.042,
+        "L16": 0.029,
+        "L20": 0.118,
+        "L24": -0.081,
+        "L28": -0.056
+      },
+      "SQ-Llama": {
+        "L4": 0.019,
+        "L8": 0.091,
+        "L12": 0.035,
+        "L16": 0.031,
+        "L20": 0.11,
+        "L24": -0.075,
+        "L28": -0.016
+      },
+      "status": "EXPLORATORY \u2014 single angles, wide CIs, read SHAPE not per-layer significance"
+    },
+    "findings": {
+      "cherry_pick_defense": "CLOSED both cells \u2014 0->16 is a window-robust positive plateau, not a knife-edge.",
+      "within_llama_replication": "ACHIEVED \u2014 cumulative 0->16 near-identical TQA(+0.107)/SQ(+0.100); late per-layer structure replicates (L20 strongest both, L24 negative+CI-clean both). Early structure dataset-varying (TQA bump L4, SQ bump L8).",
+      "king2026_replication": "PARTIAL \u2014 mid-layer peak at L20 replicated for semantic entropy, but within a non-monotonic profile with L24 sign-flip; NOT a clean single-peak replication.",
+      "window_max_disclosure": "0->24 scores HIGHER than 0->16 on BOTH cells, all 4 splits (TQA full +0.148, SQ full +0.165). REPORTED-NOT-ADOPTED: 0->16 pre-registered from independent norm analysis before curvature computed. MUST disclose 0->24 transparently."
+    },
+    "open_flags": [
+      "norm-analysis localized signal early (L0 strongest); curvature extends to L20 (deeper than 0->16). Window directionally right but slightly mis-centered \u2014 report honestly, not as confirmation.",
+      "anchor 0->16 prints +0.107 (sweep) vs +0.086 (\u00a710b) vs +0.100 (stored CSV) \u2014 recompute/indexing diff. Canonical = stored week4_curvature_features.csv. Reconcile before prose."
+    ]
+  },
+  "canonical_anchor": {
+    "timestamp": "20260620_175813",
+    "STATUS": "CORRECTED \u2014 supersedes 20260620_060958 (which was computed on STALE SE).",
+    "quantity": "TQA-Llama curv_std_w016 -> SE partial r",
+    "canonical_target": "hybrid_SE (se_hybrid_817.json). REPRODUCES registered +0.149 on test|seq,tok.",
+    "canonical_spec": "| seq_len, seq_len^2, token_entropy",
+    "CANONICAL_full817": {
+      "r": 0.086,
+      "CI": [
+        0.018,
+        0.156
+      ],
+      "verdict": "CI-CLEAN"
+    },
+    "CANONICAL_heldout_n245": {
+      "r": 0.098,
+      "CI": [
+        -0.043,
+        0.224
+      ],
+      "verdict": "CI-INCLUDES-ZERO"
+    },
+    "magnitude": "~0.09 stable across endpoints; token entropy is a suppressor; survives seq^2.",
+    "C1_status": "Real at full-817 (CI-clean); CI-MARGINAL at held-out n=245 (primary endpoint). NOT a CI-clean held-out result. Honest framing: small (~0.09), clean at full power, marginal on held-out split, magnitude-stable.",
+    "INVALIDATES": {
+      "old_canonical_anchor": "+0.107 full / +0.119 held-out were computed on STALE 'SE' column in week4_curvature_features.csv (corr to hybrid_SE only +0.436; disagree on zero-ness for 205/817 rows). The +0.100/+0.107/+0.086/+0.119 spread was NOT pure control-spec differences (last session's reconciliation was wrong) \u2014 it was a TARGET swap.",
+      "provenance": "curv/seq/token identical across CSV and build() paths; ONLY the SE target differed. hybrid_SE is canonical (reproduces registered primary). 'SE' col is stale."
+    },
+    "DOWNSTREAM_STALE_DO_NOT_TRUST": {
+      "claim2_mechanism_honesty.held_out": "TQA +0.119 / SQ +0.172 'CI-clean both Llama cells' is STALE-SE. TQA real = +0.098 CI-incl-zero. SQ-Llama held-out UNVERIFIED on hybrid_SE.",
+      "audit_closeout.curvature_key_estimates.held_out_n245_grid": "TQA +0.149 / SQ +0.208 are STALE-SE (|seq,tok on stale target). Recompute on hybrid_SE |seq,seq^2,tok required.",
+      "audit_closeout.full817_seq2_token": "BELIEVED CLEAN \u2014 produced by \u00a710b machinery which pulls hybrid_SE (TQA +0.086 reproduced exactly). Treat as trustworthy pending re-verify."
+    },
+    "DOWNSTREAM_STALE_RESOLVED_20260626": {
+      "claim2_mechanism_honesty.held_out": "RESOLVED \u2014 rewritten on hybrid_SE: SQ-Llama sole clean (+0.172); TQA +0.098 CI-incl-0.",
+      "audit_closeout.curvature_key_estimates.held_out_n245_grid": "RESOLVED \u2014 corrected to hybrid_SE |seq,seq^2,tok conv-A.",
+      "audit_closeout.length_confound_audit (0.458 family)": "RESOLVED \u2014 replaced with canonical build() values.",
+      "note": "Original DO_NOT_TRUST block retained above as audit trail."
+    }
+  },
+  "claim2_mechanism_honesty": {
+    "timestamp": "20260626_153430",
+    "supersedes": "20260620_072144 (computed on STALE 'SE' column; asserted 'both Llama cells CI-clean')",
+    "STATUS": "CORRECTED on hybrid_SE, held-out n=245, |seq,seq^2,token, convention A (within-test residualize)",
+    "scope": "Refines C2. Now folded into C4 per 20260626 framing decision (see reframe).",
+    "established_pattern": "On hybrid_SE at the held-out n=245 primary endpoint, curvature's length-partialled SE-signal is CI-CLEAN on EXACTLY ONE cell: SQ-Llama (+0.172 [+0.050,+0.297]). TQA-Llama is CI-MARGINAL (+0.098 [-0.041,+0.228], includes zero). All three Mistral cells null. The earlier 'both Llama cells clean' pattern was an artifact of the stale SE target.",
+    "model_family_NOT_a_clean_boundary": "At full-817, curvature is CI-clean on 4/6 cells spanning BOTH models and all three tasks (TQA-L +0.086, SQ-L +0.100, Bio-L +0.087, Bio-M +0.090). Bio-Mistral is clean at full power and sign-flips to -0.011 at held-out. So 'model-bound' holds at NEITHER endpoint alone: full-817 has a clean Mistral cell; held-out has only 1/3 Llama cells clean. Asserting 'model-bound' requires splicing the Llama-half of full-817 with the Mistral-half of held-out.",
+    "reframe": "C2 ('model-bound') RETIRED as a standalone headline (20260626 decision). Folded into C4: curvature is the cleanest endpoint-determines-verdict instance \u2014 same feature, same target, same controls; only the eval split changes and the survivor set moves from 4 cells (full-817) to 1 (held-out).",
+    "robust_cell": "SQ-Llama is the sole cell positive AND CI-clean at BOTH endpoints (full +0.100, held-out +0.172, strengthens on held-out). Report as the one genuinely robust curvature-SE result; do not generalize it to a model boundary.",
+    "mechanism_NOT_established": "We do NOT know WHY SQ-Llama specifically is the robust cell. Three competing explanations remain indistinguishable \u2014 enumerate, do not pick:",
+    "competing_hypotheses": {
+      "H1_target_compression": "Mistral SE more compressed (higher zero-mass) -> less SE variance for any feature to track. Confounded with model family; raise as hypothesis only.",
+      "H2_representational_geometry": "Llama vs Mistral organize trajectory geometry differently; curvature over the 0->16 window may not capture the analogous structure in Mistral. Layer sweep is LLAMA-ONLY \u2014 cannot distinguish 'no signal' from 'signal in an untested window'.",
+      "H3_underpowered_noise": "Held-out n=245 has a detection floor. TQA/Bio Llama cells are clean at full-817 but not held-out; the effect may sit below the n=245 floor on several cells. Consistent with 'endpoint/power determines verdict' (C4)."
+    },
+    "honest_writeup_sentence": "At the held-out endpoint, curvature's SE-association is CI-clean on a single cell (SQ-Llama); across the grid the apparent transfer pattern is governed by evaluation design (full-817 vs held-out), not by model family."
+  },
+  "pre_submission_checklist": {
+    "timestamp": "20260620_074431",
+    "purpose": "Open threads to close BEFORE submission. None block writing/figures. All cheap. Each is trivial now, awkward if a reviewer finds it first.",
+    "experiments_optional_but_strengthening": {
+      "E1_mistral_full817_curvature": {
+        "what": "Curvature partial-r | seq,seq^2,token on the 3 Mistral cells at full n=817.",
+        "why": "Rules H3 (underpowered noise) in/out for C2. Until run, 'model-bound' is a held-out-n=245 observation, not a powered claim. HIGHEST-VALUE open item.",
+        "cost": "Cheap, CPU; \u00a710b machinery pointed at Mistral hidden states.",
+        "decision_rule": "If Mistral stays null@817 -> 'model-bound' is powered, claim strengthens. If it flips positive@817 -> weaken to 'smaller on Mistral, near floor'."
+      },
+      "E2_grid_control_consistency": {
+        "what": "Recompute the \u00a77 2x3 grid under seq+seq^2+token (the scatter's spec).",
+        "why": "Grid figure currently uses lighter seq+token control; scatter uses seq^2. A meticulous reviewer notes the 'same' cell uses different controls across figures.",
+        "cost": "Cheap, CPU. Or: disclose the spec difference in captions (no recompute).",
+        "decision": "Lean recompute for one-spec consistency; caption-disclosure is acceptable fallback."
+      }
+    },
+    "reporting_consistency": {
+      "R1_anchor_number": "Use canonical_anchor everywhere: +0.119 held-out / +0.107 full, spec | seq,seq^2,token. NEVER quote +0.100 or +0.161 as THE anchor (intermediate specs; show as ladder only).",
+      "R2_held_out_vs_full": "Generalization claims use held-out n=245 (primary). n=817 = power supplement only. Never mix per cell (the endpoint-switching trap).",
+      "R3_figure_captions": "Every figure caption states cell + n + control spec. Grid caption: note held-out n=245 (Bio-Llama null@245 but CI-clean@817 \u2014 not a contradiction). Bars caption: eigenscore separation is absolute; effrank/curvature gap is a tendency (ranges overlap at edges) \u2014 do not claim strict separation.",
+      "R4_0to16_vs_0to24": "Disclose 0->24 scores higher than 0->16 transparently with a-priori-window justification. Report-not-adopt (anti window-selection)."
+    },
+    "framing_honesty": {
+      "F1_mechanism": "C2 mechanism is OPEN (see claim2_mechanism_honesty). State pattern + 3 hypotheses; assert none.",
+      "F2_king_replication": "PARTIAL \u2014 L20 peak replicated for semantic entropy, but non-monotonic profile w/ L24 sign-flip. Not a clean single-peak replication.",
+      "F3_lid": "Length-independent but did NOT survive clean evaluation (leakage-corrected, no positive transfer). Third failure mode, not a second survivor. Gray/de-emphasized in figures.",
+      "F4_mahalanobis": "Never computed. Acknowledge as not-pursued (audit makes it moot), not a gap to fill.",
+      "F5_standardization": "Per-layer StandardScaler fit on 572 TRAIN rows only, applied to all 817 (leakage-free). Describe precisely; it's a reviewer-attack closer."
+    },
+    "status": "Experimental phase closed. These are submission-polish items, not blockers. Recommended order if pursued: E1 (powers C2) -> E2 (figure consistency) -> captions -> draft."
+  }
+}

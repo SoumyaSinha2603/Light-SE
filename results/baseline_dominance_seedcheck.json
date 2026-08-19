@@ -1,0 +1,71 @@
+{
+  "test": "baseline dominance seed-check: curv vs token_ent partial r | seq,seq\u00b2 (equal footing), 5 seeds",
+  "per_cell": {
+    "TQA-Llama": {
+      "curv_mean": 0.034,
+      "te_mean": 0.224,
+      "te_wins": "5/5",
+      "gap_mean": 0.19,
+      "gap_range": [
+        0.125,
+        0.285
+      ]
+    },
+    "TQA-Mistral": {
+      "curv_mean": 0.011,
+      "te_mean": 0.149,
+      "te_wins": "5/5",
+      "gap_mean": 0.138,
+      "gap_range": [
+        0.065,
+        0.275
+      ]
+    },
+    "Bio-Llama": {
+      "curv_mean": 0.077,
+      "te_mean": 0.268,
+      "te_wins": "5/5",
+      "gap_mean": 0.191,
+      "gap_range": [
+        0.134,
+        0.24
+      ]
+    },
+    "Bio-Mistral": {
+      "curv_mean": 0.077,
+      "te_mean": 0.195,
+      "te_wins": "5/5",
+      "gap_mean": 0.118,
+      "gap_range": [
+        0.042,
+        0.215
+      ]
+    },
+    "SQ-Llama": {
+      "curv_mean": 0.145,
+      "te_mean": 0.261,
+      "te_wins": "5/5",
+      "gap_mean": 0.116,
+      "gap_range": [
+        0.066,
+        0.147
+      ]
+    },
+    "SQ-Mistral": {
+      "curv_mean": 0.071,
+      "te_mean": 0.108,
+      "te_wins": "3/5",
+      "gap_mean": 0.037,
+      "gap_range": [
+        -0.085,
+        0.131
+      ]
+    }
+  },
+  "verdict": "DOMINANCE HOLDS, SEED-STABLE. Token entropy beats curvature 5/5 on 5/6 cells; SQ-Mistral 3/5 (both near-zero, noise). Gap ~0.12-0.19 on real cells, never crosses zero except weakest cell.",
+  "why_stable": "Token-ent signal 2-3x larger than curvature's, sits above noise floor; reseeding moves magnitude not ordering. Signature of genuine effect.",
+  "C1_demotion": "CONFIRMED FAIR (non-circular) AND STABLE (5 seeds). Better-supported than single-split showed. Curvature redundant, decisively.",
+  "paper_spine": "Geometric uncertainty features are (C3) length confounds OR beaten by free token-entropy baseline; (C4) which you conclude depends on eval protocol. Token-ent-beats-geometry is now the firmest positive result.",
+  "correction_to_AM": "Demotion was based on 1 split; I flagged magnitude unverified; seed-check confirms dominance stable. Correction strengthens, not weakens, the demotion.",
+  "timestamp": "20260627"
+}

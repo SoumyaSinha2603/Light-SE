@@ -1,0 +1,32 @@
+# verify_numbers.py requires NOTHING beyond the Python standard library.
+#   python verify_numbers.py
+#
+# The dependencies below are for the feature-extraction and analysis code that is
+# not yet committed (see docs/NOT_INCLUDED.md). They are recorded here so the
+# environment is documented, not because anything in this repository imports them
+# today. Regenerate mechanically from the code before relying on this list.
+
+# Verified from the project's Colab setup notebook version prints (T4, 2026-06-11)
+torch==2.11.0
+transformers==4.41.0
+datasets==2.19.0
+numpy>=1.23.5,<2.3          # see note below — this pin is load-bearing
+pandas==2.2.2
+scipy==1.14.1
+scikit-learn==1.6.0
+
+accelerate
+bitsandbytes                # required for the 4-bit NF4 configuration
+huggingface_hub             # gated Llama-3 access
+
+sentence-transformers       # all-mpnet-base-v2 (NLI model roberta-large-mnli via transformers)
+tqdm
+
+# NOTE ON THE NUMPY PIN. Colab ships a numpy that SciPy 1.14.1 rejects
+# (it requires >=1.23.5,<2.3). Force-reinstalling into that range can break numba.
+# Pin numpy explicitly or a fresh environment hits the same wall.
+#
+# COVERAGE CAVEAT. This list was assembled from a subset of the project's notebooks
+# and scripts. It is a floor, not a verified complete dependency graph. No plotting
+# library is confirmed. Regenerate with an AST import scan over the exported code
+# before treating it as authoritative.

@@ -1,0 +1,24 @@
+{
+  "test": "C4 collapse seed-robustness, held-out clean count across 5 splits [42,7,123,2024,99]",
+  "full817_clean": 4,
+  "full817_fixed": true,
+  "heldout_clean_per_seed": {
+    "42": 1,
+    "7": 0,
+    "123": 3,
+    "2024": 2,
+    "99": 0
+  },
+  "heldout_mean": 1.2,
+  "heldout_range": [
+    0,
+    3
+  ],
+  "seed42_reproduces": true,
+  "verdict": "Collapse DIRECTION holds (full-817=4 always > held-out mean 1.2). But specific '4->1' is SEED-42-SPECIFIC. Held-out clean count swings 0-3; SQ-Llama not clean on seeds 7,99; no cell clean on all 5 splits.",
+  "C4_reframe": "From 'evaluation design determines verdict (4->1)' to STRONGER claim: 'held-out verdicts are THEMSELVES split-unstable (0-3 clean, median 1) while full-817 is fixed at 4 - the survivor set is largely a resampling artifact.' More damning re held-out reproducibility.",
+  "figure_impact": "Paired C4 grid stays as single-split snapshot BUT caption must say 'representative split (seed 42)' and text must report across-seed range. 'Sole survivor' framing RETIRED.",
+  "SQ-Llama_status": "Now triply-weakened: redundant vs token-ent, clean only 3/5 splits, beaten baseline. NOT robust.",
+  "decision": "C3 = bedrock. C4 = survives but rewritten to split-instability. C1 = demoted (redundant + unstable).",
+  "timestamp": "20260627"
+}

@@ -1,0 +1,15 @@
+Results, figures, and documentation in this repository — specifically the contents of
+results/, figures/, docs/, and paper/ — are licensed under the Creative Commons
+Attribution 4.0 International License (CC BY 4.0).
+
+Full text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+This matches the licence of the archived manuscript on Zenodo
+(https://doi.org/10.5281/zenodo.21097426).
+
+Source code in this repository is licensed separately under the MIT License; see
+LICENSE.
+
+Third-party material is not redistributed here. Prior work is cited in
+paper/lightse_references.bib. Model checkpoints are obtained from their original
+sources under their own licences.

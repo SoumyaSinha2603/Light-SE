@@ -1,0 +1,267 @@
+% =====================================================================
+% LIGHT-SE — verified references
+% Every entry confirmed against a primary source (arXiv / ACL Anthology /
+% publisher) as of 2026-06-27. No fabricated entries; no unverified IDs.
+%
+% Caught during verification:
+%   - king2026: first author is Jack King (NOT "Jean-Rémi King" as a
+%     metadata aggregator labeled it).
+%   - nguyen2025: venue confirmed = ACL Findings 2025 (was unconfirmed).
+%   - futrell: book review is CL 2023, not 2022 (see riezler2022validity).
+%   - yeats: official venue is ICML 2025 R2-FM Workshop -> cite as 2025
+%     (key yeats2025what); arXiv 2602.09158 kept as the eprint.
+%
+% Status: all TODOs resolved (2026-06-27).
+%   - yang2026trust, wang2025revisiting: full author lists added.
+%   - xue2023reproducibility: pages 9424--9434 + EMNLP 2023 metadata added.
+%   - nikitin2024kernel: kept (cited in Related Work, Theme 1).
+%   - yeats2025what (was yeats2026what): official venue = ICML 2025 R2-FM
+%     Workshop; year corrected 2026 -> 2025; entry type misc to inproceedings.
+%   - 2026-06-30 (Phase-2 audit remediation): added orgad2025llms (ICLR 2025,
+%     verified OpenReview KRnsX5Em3W) + sriramanan2024llmcheck (NeurIPS 2024,
+%     verified neurips.cc poster 95584). Ref count 19 -> 21.
+% =====================================================================
+
+
+% ---------- Theme 1: Semantic entropy & probes ----------
+
+@inproceedings{kuhn2023semantic,
+  title         = {Semantic Uncertainty: Linguistic Invariances for Uncertainty Estimation in Natural Language Generation},
+  author        = {Kuhn, Lorenz and Gal, Yarin and Farquhar, Sebastian},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2023},
+  eprint        = {2302.09664},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+@article{farquhar2024detecting,
+  title   = {Detecting hallucinations in large language models using semantic entropy},
+  author  = {Farquhar, Sebastian and Kossen, Jannik and Kuhn, Lorenz and Gal, Yarin},
+  journal = {Nature},
+  volume  = {630},
+  number  = {8017},
+  pages   = {625--630},
+  year    = {2024},
+  doi     = {10.1038/s41586-024-07421-0}
+}
+
+@inproceedings{kossen2024semantic,
+  title         = {Semantic Entropy Probes: Robust and Cheap Hallucination Detection in {LLMs}},
+  author        = {Kossen, Jannik and Han, Jiatong and Razzak, Muhammed and Schut, Lisa and Malik, Shreshth and Gal, Yarin},
+  booktitle     = {ICML 2024 Workshop on Foundation Models in the Wild},
+  year          = {2024},
+  eprint        = {2406.15927},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+@inproceedings{nguyen2025beyond,
+  title         = {Beyond Semantic Entropy: Boosting {LLM} Uncertainty Quantification with Pairwise Semantic Similarity},
+  author        = {Nguyen, Dang and Payani, Ali and Mirzasoleiman, Baharan},
+  booktitle     = {Findings of the Association for Computational Linguistics: ACL 2025},
+  pages         = {4530--4540},
+  year          = {2025},
+  doi           = {10.18653/v1/2025.findings-acl.234},
+  eprint        = {2506.00245},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{nikitin2024kernel,
+  title     = {Kernel Language Entropy: Fine-grained Uncertainty Quantification for {LLMs} from Semantic Similarities},
+  author    = {Nikitin, Alexander and Kossen, Jannik and Gal, Yarin and Marttinen, Pekka},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {37},
+  pages     = {8901--8929},
+  year      = {2024}
+}
+
+
+% ---------- Theme 2: Training-free geometric uncertainty (objects under audit) ----------
+
+@inproceedings{king2026representational,
+  title         = {Representational Curvature Modulates Behavioral Uncertainty in Large Language Models},
+  author        = {King, Jack and Fedorenko, Evelina and Hosseini, Eghbal A.},
+  booktitle     = {International Conference on Machine Learning (ICML)},
+  year          = {2026},
+  eprint        = {2604.23985},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+@misc{damirchi2026truth,
+  title         = {Truth as a Trajectory: What Internal Representations Reveal About Large Language Model Reasoning},
+  author        = {Damirchi, Hamed and Meza De la Jara, Ignacio and Abbasnejad, Ehsan and Shamsi, Afshar and Zhang, Zhen and Shi, Javen},
+  year          = {2026},
+  eprint        = {2603.01326},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+@inproceedings{yang2026trust,
+  title         = {Trust in One Round: Confidence Estimation for Large Language Models via Structural Signals},
+  author        = {Yang, Pengyue and Wen, Jiawen and Jin, Haolin and Huang, Linghan and Chen, Huaming and Chen, Ling},
+  booktitle     = {Proceedings of the ACM Web Conference 2026 (WWW '26)},
+  year          = {2026},
+  doi           = {10.1145/3774904.3793055},
+  eprint        = {2602.00977},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{chen2024inside,
+  title         = {{INSIDE}: {LLMs}' Internal States Retain the Power of Hallucination Detection},
+  author        = {Chen, Chao and Liu, Kai and Chen, Ze and Gu, Yi and Wu, Yue and Tao, Mingyuan and Fu, Zhihang and Ye, Jieping},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2024},
+  eprint        = {2402.03744},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+@misc{wang2025revisiting,
+  title         = {Revisiting Hallucination Detection with Effective Rank-based Uncertainty},
+  author        = {Wang, Rui and Wei, Zeming and Yue, Guanzhang and Sun, Meng},
+  year          = {2025},
+  eprint        = {2510.08389},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+
+% ---------- Theme 2 (cont.): Concurrent audits of geometric features ----------
+
+@inproceedings{yeats2025what,
+  title         = {What do Geometric Hallucination Detection Metrics Actually Measure?},
+  author        = {Yeats, Eric and Buckheit, John and Scullen, Sarah and Kennedy, Brendan and Truong, Loc and Brown, Davis and Kay, Bill and Joslyn, Cliff and Emerson, Tegan and Henry, Michael J. and Emanuello, John and Kvinge, Henry},
+  booktitle     = {ICML 2025 Workshop on Reliable and Responsible Foundation Models (R2-FM)},
+  year          = {2025},
+  eprint        = {2602.09158},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@misc{aiersilan2026hallucination,
+  title         = {Hallucination Is Linearly Decodable from Mid-Layer Hidden States in Quantized {LLMs}},
+  author        = {Aiersilan, Aizierjiang},
+  year          = {2026},
+  eprint        = {2606.02630},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+
+@inproceedings{sriramanan2024llmcheck,
+  title     = {{LLM-Check}: Investigating Detection of Hallucinations in Large Language Models},
+  author    = {Sriramanan, Gaurang and Bharti, Siddhant and Sadasivan, Vinu Sankar and Saha, Shoumik and Kattakinda, Priyatham and Feizi, Soheil},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume    = {37},
+  year      = {2024}
+}
+
+
+% ---------- Theme 3: Length & surface-feature confounds ----------
+
+@inproceedings{santilli2025revisiting,
+  title         = {Revisiting Uncertainty Quantification Evaluation in Language Models: Spurious Interactions with Response Length Bias Results},
+  author        = {Santilli, Andrea and Golinski, Adam and Kirchhof, Michael and Danieli, Federico and Blaas, Arno and Xiong, Miao and Zappella, Luca and Williamson, Sinead},
+  booktitle     = {Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  pages         = {743--759},
+  year          = {2025},
+  doi           = {10.18653/v1/2025.acl-short.60},
+  eprint        = {2504.13677},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{gupta2024language,
+  title         = {Language Model Cascades: Token-level Uncertainty and Beyond},
+  author        = {Gupta, Neha and Narasimhan, Harikrishna and Jitkrittum, Wittawat and Rawat, Ankit Singh and Menon, Aditya Krishna and Kumar, Sanjiv},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2024},
+  eprint        = {2404.10136},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@misc{dubois2024length,
+  title         = {Length-Controlled {AlpacaEval}: A Simple Way to Debias Automatic Evaluators},
+  author        = {Dubois, Yann and Galambosi, Bal\'{a}zs and Liang, Percy and Hashimoto, Tatsunori B.},
+  year          = {2024},
+  eprint        = {2404.04475},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+
+% ---------- Theme 4: Evaluation-protocol fragility ----------
+
+@inproceedings{sogaard2021random,
+  title         = {We Need To Talk About Random Splits},
+  author        = {S{\o}gaard, Anders and Ebert, Sebastian and Bastings, Jasmijn and Filippova, Katja},
+  booktitle     = {Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics (EACL): Main Volume},
+  pages         = {1823--1832},
+  year          = {2021},
+  doi           = {10.18653/v1/2021.eacl-main.156},
+  eprint        = {2005.00636},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{xue2023reproducibility,
+  title     = {We Need to Talk About Reproducibility in {NLP} Model Comparison},
+  author    = {Xue, Yan and Cao, Xuefei and Yang, Xingli and Wang, Yu and Wang, Ruibo and Li, Jihong},
+  editor    = {Bouamor, Houda and Pino, Juan and Bali, Kalika},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
+  month     = dec,
+  year      = {2023},
+  address   = {Singapore},
+  publisher = {Association for Computational Linguistics},
+  pages     = {9424--9434},
+  doi       = {10.18653/v1/2023.emnlp-main.586}
+}
+
+@article{an2021radiomics,
+  title   = {Radiomics machine learning study with a small sample size: Single random training-test set split may lead to unreliable results},
+  author  = {An, Chansik and Park, Yae Won and Ahn, Sung Soo and Han, Kyunghwa and Kim, Hwiyoung and Lee, Seung-Koo},
+  journal = {PLoS ONE},
+  volume  = {16},
+  number  = {8},
+  pages   = {e0256152},
+  year    = {2021},
+  doi     = {10.1371/journal.pone.0256152}
+}
+
+% Added 2026-06-30 (Phase-2): cross-dataset non-generalization of internal-state detectors; cited to differentiate C-C.
+@inproceedings{orgad2025llms,
+  title         = {{LLMs} Know More Than They Show: On the Intrinsic Representation of {LLM} Hallucinations},
+  author        = {Orgad, Hadas and Toker, Michael and Gekhman, Zorik and Reichart, Roi and Szpektor, Idan and Kotek, Hadas and Belinkov, Yonatan},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2025},
+  eprint        = {2410.02707},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+% Primary source for the "report CIs, not bare point estimates" argument.
+@book{riezler2022validity,
+  title     = {Validity, Reliability, and Significance: Empirical Methods for {NLP} and Data Science},
+  author    = {Riezler, Stefan and Hagmann, Michael},
+  publisher = {Springer},
+  series    = {Synthesis Lectures on Human Language Technologies},
+  year      = {2022},
+  doi       = {10.2200/S01137ED1V01Y202110HLT055}
+}
+
+% Alternative to riezler2022validity: the book review by Futrell (2023).
+% This is a live but UNCITED entry -- BibTeX silently ignores entries that are
+% never cited -- kept ready to swap in. To use the review instead of the book,
+% cite \citep{futrell2023validity} in place of \citep{riezler2022validity}.
+@article{futrell2023validity,
+  title   = {Validity, Reliability, and Significance: Empirical Methods for {NLP} and Data Science},
+  author  = {Futrell, Richard},
+  journal = {Computational Linguistics},
+  volume  = {49},
+  number  = {1},
+  pages   = {249--251},
+  year    = {2023},
+  doi     = {10.1162/coli_r_00467}
+}
+

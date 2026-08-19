@@ -1,0 +1,33 @@
+# Regenerable artifacts — never commit
+*.npz
+*.npy
+hidden_states/
+pooled_hidden_states*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Backups and scratch
+*.bak
+*.bak_*
+*_BACKUP_*
+*.tmp
+
+# LaTeX build products
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+
+# OS
+.DS_Store
+Thumbs.db
