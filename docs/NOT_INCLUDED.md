@@ -83,6 +83,12 @@ someone to reproduce a number the authors already know to be wrong.
 
 It will be replaced by code written against the canonical frame, not resurrected.
 
+## A note on the bibliography
+
+`paper/lightse_references.bib` carries `howpublished = {arXiv:...}` on the arXiv-only `@misc`
+entries. This is not cosmetic: some bibliography styles drop the `eprint` field, which leaves
+those references with no venue and no identifier — unfindable. The redundancy is deliberate.
+
 ## Third-party material not redistributed
 
 Reference PDFs of prior work are cited in the bibliography, not copied here. Model

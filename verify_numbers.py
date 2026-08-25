@@ -16,6 +16,7 @@ Exit code 0 = every claim traced. Non-zero = at least one claim did not.
 
 import csv
 import json
+import random
 import math
 import os
 import sys
@@ -439,6 +440,98 @@ for label, subset, paper_r in (("full-817", None, 0.086), ("held-out n=245", "te
         paper_r,
         round(got, 4),
         approx(got, paper_r, 5e-4),
+    )
+
+# ---------------------------------------------------------------------------
+# FLOOR — the "Where the target degenerates" paragraph
+#
+# These are the only quantities in the paper computed from the released data rather
+# than looked up from a result file, so they are recomputed here in full.
+# ---------------------------------------------------------------------------
+
+floor_pct = {k: frac(v, lambda x: x == 0.0) for k, v in per_cell.items()}
+check(
+    "Floor fraction spans 21.9% (SQ-Llama) to 50.1% (Bio-Mistral)",
+    "FLOOR",
+    (21.9, 50.1),
+    (round(min(floor_pct.values()), 1), round(max(floor_pct.values()), 1)),
+)
+check(
+    "Mistral floors more than Llama on all three datasets",
+    "FLOOR",
+    True,
+    all(floor_pct[d + "-Mistral"] > floor_pct[d + "-Llama"] for d in ("TQA", "Bio", "SQ")),
+)
+
+# The paper explicitly declines to attribute weak Mistral cells to floor mass.
+_cells = list(floor_pct)
+_x = [floor_pct[c] for c in _cells]
+_y = [CURV["full817_partial_r"][c] for c in _cells]
+
+
+def _rank(v):
+    order = sorted(range(len(v)), key=lambda i: v[i])
+    out = [0] * len(v)
+    for pos, i in enumerate(order):
+        out[i] = pos + 1
+    return out
+
+
+rho = pearson(_rank(_x), _rank(_y))
+check(
+    "Floor fraction does NOT track curvature strength (Spearman rho = -0.14)",
+    "FLOOR",
+    -0.14,
+    round(rho, 2),
+    approx(rho, -0.14, 0.005),
+)
+check(
+    "Counterexample holds: largest floor mass is not the weakest cell",
+    "FLOOR",
+    True,
+    max(floor_pct, key=floor_pct.get) == "Bio-Mistral"
+    and CURV["full817_partial_r"]["Bio-Mistral"] > min(_y),
+)
+
+# Anchor-cell effect sizes, bootstrap at seed 42 (as stated in the paper)
+_se = {r["question_id"]: float(r["hybrid_SE"]) for r in FEAT}
+_floored = [r for r in FEAT if _se[r["question_id"]] == 0.0]
+_rest = [r for r in FEAT if _se[r["question_id"]] > 0.0]
+
+
+def cohen_d(a, b):
+    n1, n2 = len(a), len(b)
+    m1, m2 = sum(a) / n1, sum(b) / n2
+    v1 = sum((x - m1) ** 2 for x in a) / (n1 - 1)
+    v2 = sum((x - m2) ** 2 for x in b) / (n2 - 1)
+    sp = math.sqrt(((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2))
+    return (m1 - m2) / sp
+
+
+check("Anchor cell floored/non-floored split is 208/609", "FLOOR", (208, 609),
+      (len(_floored), len(_rest)))
+
+for col, paper_d, ci_excludes_zero in (
+    ("seq_len", -0.400, True),
+    ("token_entropy", +0.016, False),
+    ("curv_std_w016", -0.258, True),
+):
+    A = [float(r[col]) for r in _floored]
+    B = [float(r[col]) for r in _rest]
+    d = cohen_d(A, B)
+    rng = random.Random(42)
+    boots = sorted(
+        cohen_d([rng.choice(A) for _ in A], [rng.choice(B) for _ in B])
+        for _ in range(2000)
+    )
+    lo, hi = boots[50], boots[1949]
+    check(
+        "Floor effect on %s: d = %+.3f, CI %s zero"
+        % (col, paper_d, "excludes" if ci_excludes_zero else "includes"),
+        "FLOOR",
+        paper_d,
+        round(d, 3),
+        approx(d, paper_d, 5e-4) and ((lo * hi > 0) == ci_excludes_zero),
     )
 
 # ---------------------------------------------------------------------------
