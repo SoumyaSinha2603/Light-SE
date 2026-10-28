@@ -7,7 +7,7 @@ A Robustness Audit of Training-Free Hallucination Signals**
 > no AUROC, no precision, no recall. The quantity every feature is scored against is
 > meaning-clustered **semantic entropy**.
 
-[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21097426-blue)](https://doi.org/10.5281/zenodo.21097426)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21985260-blue)](https://doi.org/10.5281/zenodo.21985260)
 [![Code licence: MIT](https://img.shields.io/badge/code-MIT-green)](LICENSE)
 [![Data licence: CC BY 4.0](https://img.shields.io/badge/results-CC%20BY%204.0-green)](LICENSE-DATA)
 
